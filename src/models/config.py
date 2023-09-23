@@ -1,5 +1,5 @@
 import torch
-from src.model.encoder import encoder
+from models.encoder import encoder
 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"

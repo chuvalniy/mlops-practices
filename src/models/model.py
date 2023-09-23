@@ -4,8 +4,8 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-import src.model.config as cfg
-import src.model.encoder as enc
+import models.config as cfg
+import models.encoder as enc
 
 
 class MultiHeadAttention(nn.Module):
@@ -125,22 +125,21 @@ class GenerativeLanguageModel(nn.Module):
         return src
 
 
-def get_model():
-    model = GenerativeLanguageModel(
-        cfg.d_model,
-        cfg.vocab_size,
-        cfg.block_size,
-        cfg.n_layers,
-        cfg.n_head,
-        cfg.dropout
-    )
+model = GenerativeLanguageModel(
+    cfg.d_model,
+    cfg.vocab_size,
+    cfg.block_size,
+    cfg.n_layers,
+    cfg.n_head,
+    cfg.dropout
+)
 
-    model.load_state_dict(torch.load("src/model/transformer_decoder_gpt_2_tokenizer.pt", map_location=cfg.device))
-    model.eval()
-
-    return model
+model.load_state_dict(torch.load("models/transformer_decoder_gpt_2_tokenizer.pt", map_location=cfg.device))
+model.eval()
 
 
-def generate_and_decode_text(model, n_words=500):
+def generate_and_decode_text(n_words=500):
     context = torch.zeros((1, 1), dtype=torch.long, device=cfg.device)
-    print(enc.encoder.decode(model.generate(context, n_words)[0].tolist()))
+    text = enc.encoder.decode(model.generate(context, n_words)[0].tolist())
+
+    return text
