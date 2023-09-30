@@ -1,0 +1,9 @@
+[core]
+    remote = remote
+    autostage = false
+
+['remote "remote"']
+    url = s3://star-trek-generator-bucket
+    endpointurl = https://storage.yandexcloud.net
+    access_key_id = YCAJE8PjyyAmNz99eF0NqRpnj
+    secret_access_key = YCOvG3k3-IclZ26R76YgcpHU2tjLYJqZn0_cC1gy
