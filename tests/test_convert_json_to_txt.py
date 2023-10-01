@@ -38,7 +38,7 @@ def test_convert_json_to_txt(mock_json_path: str, tmp_path: pathlib.Path):
     """
     output_path = tmp_path / "output.txt"
 
-    # tokenize_data() uses CLI, so define CliRunner as helper to run the function.
+    # convert_json_to_txt() uses CLI, so define CliRunner as helper to run the function.
     runner = CliRunner()
     result = runner.invoke(convert_json_to_txt, [mock_json_path, str(output_path)])
 
