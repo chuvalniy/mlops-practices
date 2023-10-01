@@ -1,4 +1,5 @@
 import json
+import pathlib
 
 import pytest
 from click.testing import CliRunner
@@ -7,7 +8,12 @@ from src.data.convert_json_to_txt import convert_json_to_txt
 
 
 @pytest.fixture()
-def mock_json_path(tmp_path):
+def mock_json_path(tmp_path: pathlib.Path):
+    """
+    Creates temporary data folder with mock.json file to use it in further test.
+    :param tmp_path: Temporary file path provided via pytest API.
+    :return:
+    """
     temp_dir = tmp_path / "data"
     temp_dir.mkdir()
 
@@ -23,9 +29,16 @@ def mock_json_path(tmp_path):
     return str(json_file_path)
 
 
-def test_convert_json_to_txt(mock_json_path, tmp_path):
+def test_convert_json_to_txt(mock_json_path: str, tmp_path: pathlib.Path):
+    """
+    Checks whether JSON file was converted to .txt format.
+    :param mock_json_path: File path created in mock_json_path().
+    :param tmp_path: Temporary file path provided via pytest API.
+    :return:
+    """
     output_path = tmp_path / "output.txt"
 
+    # tokenize_data() uses CLI, so define CliRunner as helper to run the function.
     runner = CliRunner()
     result = runner.invoke(convert_json_to_txt, [mock_json_path, str(output_path)])
 
