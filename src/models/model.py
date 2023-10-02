@@ -7,6 +7,7 @@ from torch.nn import functional as F
 
 __all__ = ['Transformer']
 
+
 class MultiHeadAttention(nn.Module):
     """
     Multi-head Attention.
@@ -71,6 +72,7 @@ class FeedForward(nn.Module):
     """
     Feed-forward module of transformer.
     """
+
     def __init__(self, d_model: int, dropout: float = 0.1):
         """
         :param d_model: Model dimension.
@@ -133,6 +135,7 @@ class TransformerDecoder(nn.Module):
     """
     Transformer decoder (Multi-head attention & Feed-forward).
     """
+
     def __init__(self, d_model: int, block_size: int, n_head: int, dropout: float = 0.1):
         """
         :param d_model: Model dimension.
@@ -165,6 +168,7 @@ class Transformer(nn.Module):
     """
     Decoder-only transformer.
     """
+
     def __init__(self, d_model: int, vocab_size: int, block_size: int, n_head: int, n_layer: int, dropout: float = 0.1):
         """
         :param d_model: Model dimension.
@@ -176,6 +180,10 @@ class Transformer(nn.Module):
 
         """
         super().__init__()
+
+        self.d_model = d_model
+        self.vocab_size = vocab_size
+        self.block_size = block_size
 
         # Preprocess tokens before putting inputs to the transformer.
         self.tokens_emb = nn.Embedding(vocab_size, d_model)
