@@ -23,9 +23,9 @@ def transformer_model():
     return model
 
 
-def test_model_dimensions(transformer_model: Transformer):
+def test_model(transformer_model: Transformer):
     """
-    Tests the output dimensions of the model output.
+    Tests the output dimensions & type of the model output.
 
     :param transformer_model: Transformer model.
     :return: None
@@ -38,6 +38,5 @@ def test_model_dimensions(transformer_model: Transformer):
 
     output = transformer_model(example_data)
 
-    expected_output = torch.ones(size=(1, block_size, vocab_size), dtype=torch.int64)
-
-    assert output.shape == expected_output.shape
+    assert isinstance(output, torch.Tensor)
+    assert output.shape == (1, block_size, vocab_size)
