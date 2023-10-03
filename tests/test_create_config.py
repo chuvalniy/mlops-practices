@@ -8,6 +8,12 @@ from src import create_config
 
 
 def test_create_config(tmp_path: pathlib.Path):
+    """
+    Checks if created config is the same as expected one.
+
+    :param tmp_path: Path to save config file.
+    :return:
+    """
     output_path = tmp_path / 'model_config.json'
 
     d_model = 16
