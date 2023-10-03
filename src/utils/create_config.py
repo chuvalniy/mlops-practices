@@ -1,6 +1,8 @@
+import json
+
 import click
 import tiktoken
-import json
+
 
 @click.command()
 @click.argument("d_model", type=click.INT)
@@ -49,3 +51,7 @@ def create_config(
     # Save config into JSON file.
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(config, f)
+
+
+if __name__ == "__main__":
+    create_config()

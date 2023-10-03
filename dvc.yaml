@@ -14,3 +14,10 @@ stages:
       - src/data/tokenize_data.py
     outs:
       - data/processed/all_data_tokenized.txt
+
+  create_config:
+    cmd: python src/utils/create_config.py 16 8 4 4 0.1 4 model_config.json
+    deps:
+      - src/utils/create_config.py
+    outs:
+      - model_config.json
