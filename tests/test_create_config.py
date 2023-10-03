@@ -14,6 +14,9 @@ def test_create_config(tmp_path: pathlib.Path):
     n_head = 4
     n_layer = 2
 
+    lr = 1e-3
+    weight_decay = 1e-5
+
     block_size = 8
     batch_size = 4
     dropout = 0.1
@@ -22,7 +25,8 @@ def test_create_config(tmp_path: pathlib.Path):
     runner = CliRunner()
     result = runner.invoke(
         create_config,
-        [str(d_model), str(block_size), str(n_head), str(n_layer), str(dropout), str(batch_size), str(output_path)]
+        [str(d_model), str(lr), str(weight_decay), str(block_size), str(n_head), str(n_layer), str(dropout),
+         str(batch_size), str(output_path)]
     )
 
     # Check if the function passed at all.
@@ -37,6 +41,8 @@ def test_create_config(tmp_path: pathlib.Path):
 
     expected_config = {
         "d_model": d_model,
+        "lr": lr,
+        "weight_decay": weight_decay,
         "block_size": block_size,
         "n_head": n_head,
         "n_layer": n_layer,
