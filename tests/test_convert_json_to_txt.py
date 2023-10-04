@@ -50,5 +50,3 @@ def test_convert_json_to_txt(mock_json_path: str, tmp_path: pathlib.Path):
     expected_output = "script_1script_2script_3script_4"
 
     assert output_text == expected_output
-
-
