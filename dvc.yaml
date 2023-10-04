@@ -1,0 +1,23 @@
+stages:
+  convert_json_to_txt:
+    cmd: python src/data/convert_json_to_txt.py data/raw/all_scripts_raw.json data/interim/all_scripts_raw.txt
+    deps:
+      - data/raw/all_scripts_raw.json
+      - src/data/convert_json_to_txt.py
+    outs:
+      - data/interim/all_scripts_raw.txt
+
+  tokenize_data:
+    cmd: python src/data/tokenize_data.py data/interim/all_scripts_raw.txt data/processed/all_data_tokenized.txt
+    deps:
+      - data/interim/all_scripts_raw.txt
+      - src/data/tokenize_data.py
+    outs:
+      - data/processed/all_data_tokenized.txt
+
+  create_config:
+    cmd: python src/utils/create_config.py 16 8 4 4 0.1 4 model_config.json
+    deps:
+      - src/utils/create_config.py
+    outs:
+      - model_config.json

@@ -1,0 +1,46 @@
+schema: '2.0'
+stages:
+  convert_json_to_txt:
+    cmd: python src/data/convert_json_to_txt.py data/raw/all_scripts_raw.json data/interim/all_scripts_raw.txt
+    deps:
+    - path: data/raw/all_scripts_raw.json
+      hash: md5
+      md5: 4ec3df89b0d2e827f22f37072dd32982
+      size: 23067507
+    - path: src/data/convert_json_to_txt.py
+      hash: md5
+      md5: 69018a2d54caf98607a2026326dcab63
+      size: 780
+    outs:
+    - path: data/interim/all_scripts_raw.txt
+      hash: md5
+      md5: 1916f5f51c313c5cf9ed3c7b0299aa83
+      size: 22979546
+  tokenize_data:
+    cmd: python src/data/tokenize_data.py data/interim/all_scripts_raw.txt data/processed/all_data_tokenized.txt
+    deps:
+    - path: data/interim/all_scripts_raw.txt
+      hash: md5
+      md5: 1916f5f51c313c5cf9ed3c7b0299aa83
+      size: 22979546
+    - path: src/data/tokenize_data.py
+      hash: md5
+      md5: 94851345cf26da9dcb6874f001aa943b
+      size: 813
+    outs:
+    - path: data/processed/all_data_tokenized.txt
+      hash: md5
+      md5: edf9db3050a063830899c4393437afb7
+      size: 28895690
+  create_config:
+    cmd: python src/utils/create_config.py 16 8 4 4 0.1 4 model_config.json
+    deps:
+    - path: src/utils/create_config.py
+      hash: md5
+      md5: 8858ad3f7c37681ed9d1eeb43d2e04a7
+      size: 1669
+    outs:
+    - path: model_config.json
+      hash: md5
+      md5: 57fec4ba38204b715392eff9aaf10c0b
+      size: 113
