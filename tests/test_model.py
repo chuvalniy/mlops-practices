@@ -8,7 +8,6 @@ from src import Transformer
 def transformer_model():
     """
     Fixture to initialize model and use it in further tests.
-
     :return: Transformer model.
     """
     d_model = 16
@@ -26,7 +25,6 @@ def transformer_model():
 def test_model(transformer_model: Transformer):
     """
     Tests the output dimensions & type of the model output.
-
     :param transformer_model: Transformer model.
     :return: None
     """

@@ -29,7 +29,7 @@ def train_model(input_path: str, config_path: str, output_path: str, train_iter:
 
     # Load data and split into train & validation sets.
     with open(input_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
+        data = f.read()
 
     data = torch.tensor([int(c) for c in data.split()], dtype=torch.long)
     train_data, val_data = _train_test_split(data, split_ratio)
@@ -59,7 +59,9 @@ def train_model(input_path: str, config_path: str, output_path: str, train_iter:
 
         # Forward pass w/ loss calculation.
         output = model(X)
+
         output = output.view(B * T, -1)
+        y = y.view(B * T)
 
         train_loss = criterion(output, y)
 
@@ -70,7 +72,7 @@ def train_model(input_path: str, config_path: str, output_path: str, train_iter:
 
         # Validate model
         if idx % val_iter == 0:
-            val_loss = _validate_model(model, criterion)
+            val_loss = _validate_model(model, criterion, val_data, val_iter, model_config)
             print(f"Iteraion {idx}/{train_iter} | Train loss: {train_loss} | Val loss: {val_loss}")
 
     torch.save(model.state_dict(), output_path)  # Save model weights.
@@ -131,7 +133,9 @@ def _validate_model(model: Transformer, criterion: nn.CrossEntropyLoss, data: to
 
         # Forward pass
         output = model(X)
+
         output = output.view(B * T, -1)
+        y = y.view(B * T)
 
         loss = criterion(output, y)
 
