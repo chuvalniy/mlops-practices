@@ -1,10 +1,26 @@
 import json
+import os
 
 import click
+import mlflow
 import torch
 import torch.nn as nn
+from dotenv import load_dotenv
 
-from src import Transformer
+from model import Transformer
+
+load_dotenv()
+
+# Get remote server credentials from .env and set tracking URI for mlflow.
+remote_server_ip = os.getenv("MLFLOW_TRACKING_IP")
+remote_server_port = os.getenv("MLFLOW_TRACKING_PORT")
+remote_server_uri = f"http://{remote_server_ip}:{remote_server_port}"
+
+mlflow.set_tracking_uri(remote_server_uri)
+
+# Update S3 endpoint URL with current IP address (default is localhost).
+s3_server_port = os.getenv("MLFLOW_S3_ENDPOINT_PORT")
+os.environ['MLFLOW_S3_ENDPOINT_URL'] = f"http://{remote_server_ip}:{s3_server_port}"
 
 
 @click.command()
@@ -27,55 +43,61 @@ def train_model(input_path: str, config_path: str, output_path: str, train_iter:
     :return:
     """
 
-    # Load data and split into train & validation sets.
-    with open(input_path, 'r', encoding='utf-8') as f:
-        data = f.read()
+    with mlflow.start_run():
+        # Load data and split into train & validation sets.
+        with open(input_path, 'r', encoding='utf-8') as f:
+            data = f.read()
 
-    data = torch.tensor([int(c) for c in data.split()], dtype=torch.long)
-    train_data, val_data = _train_test_split(data, split_ratio)
+        data = torch.tensor([int(c) for c in data.split()], dtype=torch.long)
+        train_data, val_data = _train_test_split(data, split_ratio)
 
-    # Load config file and define a model.
-    with open(config_path, 'r', encoding='utf-8') as f:
-        model_config = json.load(f)
+        # Load config file and define a model.
+        with open(config_path, 'r', encoding='utf-8') as f:
+            model_config = json.load(f)
 
-    model = Transformer(
-        d_model=model_config['d_model'],
-        vocab_size=model_config['vocab_size'],
-        block_size=model_config['block_size'],
-        n_head=model_config['n_head'],
-        n_layer=model_config['n_layer'],
-        dropout=model_config['dropout']
-    )
+        mlflow.log_params(model_config)
 
-    # Define optimizer & criterion for loss
-    optimizer = torch.optim.AdamW(model.parameters(), lr=model_config['lr'])
-    criterion = nn.CrossEntropyLoss()
+        model = Transformer(
+            d_model=model_config['d_model'],
+            vocab_size=model_config['vocab_size'],
+            block_size=model_config['block_size'],
+            n_head=model_config['n_head'],
+            n_layer=model_config['n_layer'],
+            dropout=model_config['dropout']
+        )
 
-    # Training process.
-    for idx in range(train_iter):
-        X, y = _get_batch(train_data, model_config['block_size'], model_config['batch_size'])
+        # Define optimizer & criterion for loss
+        optimizer = torch.optim.AdamW(model.parameters(), lr=model_config['lr'])
+        criterion = nn.CrossEntropyLoss()
 
-        B, T = X.shape
+        # Training process.
+        for idx in range(train_iter):
+            X, y = _get_batch(train_data, model_config['block_size'], model_config['batch_size'])
 
-        # Forward pass w/ loss calculation.
-        output = model(X)
+            B, T = X.shape
 
-        output = output.view(B * T, -1)
-        y = y.view(B * T)
+            # Forward pass w/ loss calculation.
+            output = model(X)
 
-        train_loss = criterion(output, y)
+            output = output.view(B * T, -1)
+            y = y.view(B * T)
 
-        # Backward pass
-        optimizer.zero_grad(set_to_none=True)
-        train_loss.backward()
-        optimizer.step()
+            train_loss = criterion(output, y)
 
-        # Validate model
-        if idx % val_iter == 0:
-            val_loss = _validate_model(model, criterion, val_data, val_iter, model_config)
-            print(f"Iteraion {idx}/{train_iter} | Train loss: {train_loss} | Val loss: {val_loss}")
+            # Backward pass
+            optimizer.zero_grad(set_to_none=True)
+            train_loss.backward()
+            optimizer.step()
 
-    torch.save(model.state_dict(), output_path)  # Save model weights.
+            # Validate model
+            if idx % val_iter == 0:
+                val_loss = _validate_model(model, criterion, val_data, val_iter, model_config)
+                print(f"Iteraion {idx}/{train_iter} | Train loss: {train_loss} | Val loss: {val_loss}")
+
+                mlflow.log_metric("loss", val_loss, step=idx)  # Track loss in mlflow.
+
+        mlflow.pytorch.log_model(model, "transformer_baseline")
+        torch.save(model.state_dict(), output_path)  # Save model weights.
 
 
 def _train_test_split(data: torch.Tensor, split_ratio: float):
