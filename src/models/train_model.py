@@ -13,8 +13,8 @@ from torch.nn import functional as F
 load_dotenv()
 
 # Get remote server credentials from .env and set tracking URI for mlflow.
-remote_server_ip = os.getenv("MLFLOW_TRACKING_IP")
-remote_server_port = os.getenv("MLFLOW_TRACKING_PORT")
+remote_server_ip = os.getenv("MLFLOW_TRACKING_IP") if os.getenv("MLFLOW_TRACKING_IP") is not None else "localhost"
+remote_server_port = os.getenv("MLFLOW_TRACKING_PORT") if os.getenv("MLFLOW_TRACKING_PORT") is not None else 5000
 remote_server_uri = f"http://{remote_server_ip}:{remote_server_port}"
 
 mlflow.set_tracking_uri(remote_server_uri)
