@@ -5,6 +5,7 @@ import torch.nn as nn
 from torch import Tensor
 from torch.nn import functional as F
 
+
 class MultiHeadAttention(nn.Module):
     """
     Multi-head Attention.

@@ -46,7 +46,7 @@ stages:
       size: 145
   train_model:
     cmd: python src/models/train_model.py data/processed/all_data_tokenized.txt model_config.json
-      models/weights.pt 1000 100 0.1
+      models/weights.pt 101 100 0.1
     deps:
     - path: data/processed/all_data_tokenized.txt
       hash: md5
@@ -58,10 +58,10 @@ stages:
       size: 145
     - path: src/models/train_model.py
       hash: md5
-      md5: e11bcfef5ea1a88ca0ea21c420422c19
-      size: 6120
+      md5: e7ad1a3b2d01d2816523d0bca0eb2e0d
+      size: 12750
     outs:
     - path: models/weights.pt
       hash: md5
-      md5: 641f402da29f0f63544e57c606a561e5
+      md5: 215c9c177adf573be42d907ee6a0d747
       size: 7031245

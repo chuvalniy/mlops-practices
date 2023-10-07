@@ -23,7 +23,7 @@ stages:
       - model_config.json
 
   train_model:
-    cmd: python src/models/train_model.py data/processed/all_data_tokenized.txt model_config.json models/weights.pt 1000 100 0.1
+    cmd: python src/models/train_model.py data/processed/all_data_tokenized.txt model_config.json models/weights.pt 101 100 0.1
     deps:
       - data/processed/all_data_tokenized.txt
       - src/models/train_model.py
