@@ -13,11 +13,12 @@ from torch.nn import functional as F
 load_dotenv()
 
 # Get remote server credentials from .env and set tracking URI for mlflow.
-remote_server_ip = os.getenv("MLFLOW_TRACKING_IP") if os.getenv("MLFLOW_TRACKING_IP") is not None else "localhost"
-remote_server_port = os.getenv("MLFLOW_TRACKING_PORT") if os.getenv("MLFLOW_TRACKING_PORT") is not None else 5000
+remote_server_ip = os.getenv("MLFLOW_TRACKING_IP")
+remote_server_port = os.getenv("MLFLOW_TRACKING_PORT")
 remote_server_uri = f"http://{remote_server_ip}:{remote_server_port}"
 
-mlflow.set_tracking_uri(remote_server_uri)
+if remote_server_ip is not None:
+    mlflow.set_tracking_uri(remote_server_uri)
 
 # Update S3 endpoint URL with current IP address (default is localhost).
 s3_server_port = os.getenv("MLFLOW_S3_ENDPOINT_PORT")
@@ -261,7 +262,8 @@ def train_model(input_path: str, config_path: str, output_path: str, train_iter:
         with open(config_path, 'r', encoding='utf-8') as f:
             model_config = json.load(f)
 
-        mlflow.log_params(model_config)
+        if mlflow.is_tracking_uri_set():
+            mlflow.log_params(model_config)
 
         model = Transformer(
             d_model=model_config['d_model'],
@@ -300,9 +302,12 @@ def train_model(input_path: str, config_path: str, output_path: str, train_iter:
                 val_loss = _validate_model(model, criterion, val_data, val_iter, model_config)
                 print(f"Iteraion {idx}/{train_iter} | Train loss: {train_loss} | Val loss: {val_loss}")
 
-                mlflow.log_metric("loss", val_loss, step=idx)  # Track loss in mlflow.
+                if mlflow.is_tracking_uri_set():
+                    mlflow.log_metric("loss", val_loss, step=idx)  # Track loss in mlflow.
 
-        mlflow.pytorch.log_model(model, "transformer_baseline")
+        if mlflow.is_tracking_uri_set():
+            mlflow.pytorch.log_model(model, "transformer_baseline")
+
         torch.save(model.state_dict(), output_path)  # Save model weights.
 
 
