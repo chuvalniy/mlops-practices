@@ -16,8 +16,17 @@ stages:
       - data/processed/all_data_tokenized.txt
 
   create_config:
-    cmd: python src/utils/create_config.py 16 8 4 4 0.1 4 model_config.json
+    cmd: python src/utils/create_config.py 16 0.1 0.1 8 4 4 0.1 4 model_config.json
     deps:
       - src/utils/create_config.py
     outs:
       - model_config.json
+
+  train_model:
+    cmd: python src/models/train_model.py data/processed/all_data_tokenized.txt model_config.json models/weights.pt 101 100 0.1
+    deps:
+      - data/processed/all_data_tokenized.txt
+      - src/models/train_model.py
+      - model_config.json
+    outs:
+      - models/weights.pt

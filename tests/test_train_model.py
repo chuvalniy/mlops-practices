@@ -8,7 +8,7 @@ import tiktoken
 import torch
 from click.testing import CliRunner
 
-from src import train_model
+from src.models.train_model import train_model
 
 
 @pytest.fixture()

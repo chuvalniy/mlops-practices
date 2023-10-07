@@ -2,3 +2,4 @@
 .idea/
 .git/
 venv
+src/models/model.py
