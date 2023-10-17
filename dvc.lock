@@ -65,3 +65,36 @@ stages:
       hash: md5
       md5: b36ccb9073b907862622e00f59d0ff05
       size: 7031245
+  clean_data:
+    cmd: python src/data/clean_data.py data/raw/smoking_driking_dataset_Ver01.csv
+      data/interim/cleaned_data.csv
+    deps:
+    - path: data/raw/smoking_driking_dataset_Ver01.csv
+      hash: md5
+      md5: 1b1b7bb3e3f428c250798d7e53fc5ec4
+      size: 109561668
+    - path: src/data/clean_data.py
+      hash: md5
+      md5: 01e66663bb3ad85f197b205ba8ffdfc6
+      size: 1417
+    outs:
+    - path: data/interim/cleaned_data.csv
+      hash: md5
+      md5: 08e265a99c3e4c4fd2f847bf00d2952b
+      size: 139502223
+  one_hot_encode_data:
+    cmd: python src/data/one_hot_encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
+    deps:
+    - path: data/interim/cleaned_data.csv
+      hash: md5
+      md5: 08e265a99c3e4c4fd2f847bf00d2952b
+      size: 139502223
+    - path: src/data/one_hot_encode_data.py
+      hash: md5
+      md5: 7b2fe07f8c7a524b78fa3ccdf367cab0
+      size: 645
+    outs:
+    - path: data/processed/processed_data.csv
+      hash: md5
+      md5: 85b5acb7d8f38267741ff7ba246b834c
+      size: 150268501
