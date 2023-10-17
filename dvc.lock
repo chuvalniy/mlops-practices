@@ -98,3 +98,24 @@ stages:
       hash: md5
       md5: 85b5acb7d8f38267741ff7ba246b834c
       size: 150268501
+  prepare_datasets:
+    cmd: python src/models/prepare_datasets.py data/processed/processed_data.csv data/processed/train.csv
+      data/processed/val.csv
+    deps:
+    - path: data/processed/processed_data.csv
+      hash: md5
+      md5: 85b5acb7d8f38267741ff7ba246b834c
+      size: 150268501
+    - path: src/models/prepare_datasets.py
+      hash: md5
+      md5: f35ce787c87de2a7512f6ae49909cf19
+      size: 898
+    outs:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: abf0cb3e1e290d3fab19ff538a22b59e
+      size: 105187598
+    - path: data/processed/val.csv
+      hash: md5
+      md5: fead3f0dfbd019148f75ebc3eb7c5040
+      size: 45081293
