@@ -8,7 +8,7 @@ from src.data.convert_json_to_txt import convert_json_to_txt
 
 
 @pytest.fixture()
-def mock_json_path(tmp_path: pathlib.Path):
+def mock_csv_path(tmp_path: pathlib.Path):
     """
     Creates temporary data folder with mock.json file to use it in further test.
     :param tmp_path: Temporary file path provided via pytest API.
@@ -29,7 +29,7 @@ def mock_json_path(tmp_path: pathlib.Path):
     return str(json_file_path)
 
 
-def test_convert_json_to_txt(mock_json_path: str, tmp_path: pathlib.Path):
+def test_convert_json_to_txt(mock_csv_path, tmp_path: pathlib.Path):
     """
     Checks whether JSON file was converted to .txt format.
     :param mock_json_path: File path created in mock_json_path().
@@ -40,7 +40,7 @@ def test_convert_json_to_txt(mock_json_path: str, tmp_path: pathlib.Path):
 
     # convert_json_to_txt() uses CLI, so define CliRunner as helper to run the function.
     runner = CliRunner()
-    result = runner.invoke(convert_json_to_txt, [mock_json_path, str(output_path)])
+    result = runner.invoke(convert_json_to_txt, [mock_csv_path, str(output_path)])
 
     assert result.exit_code == 0
 
