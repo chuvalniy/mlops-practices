@@ -1,8 +1,15 @@
 stages:
-  convert_json_to_txt:
-    cmd: python src/data/convert_json_to_txt.py data/raw/all_scripts_raw.json data/interim/all_scripts_raw.txt
+  clean_data:
+    cmd: python src/data/clean_data.py data/raw/smoking_driking_dataset_Ver01.csv data/interim/cleaned_data.csv
     deps:
-      - data/raw/all_scripts_raw.json
-      - src/data/convert_json_to_txt.py
+      - data/raw/smoking_driking_dataset_Ver01.csv
+      - src/data/clean_data.py
     outs:
-      - data/interim/all_scripts_raw.txt
+      - data/interim/cleaned_data.csv
+  one_hot_encode_data:
+    cmd: python src/data/one_hot_encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
+    deps:
+      - data/interim/cleaned_data.csv
+      - src/data/one_hot_encode_data.py
+    outs:
+      - data/processed/processed_data.csv

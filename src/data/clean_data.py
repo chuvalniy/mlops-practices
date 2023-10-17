@@ -31,3 +31,6 @@ def clean_data(input_path: str, output_path: str) -> None:
     # Save into new .csv file.
     df.to_csv(output_path, index=False)
 
+
+if __name__ == "__main__":
+    clean_data()

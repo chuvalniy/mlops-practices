@@ -17,3 +17,7 @@ def one_hot_encode_data(input_path: str, output_path: str) -> None:
     df = pd.get_dummies(df)
 
     df.to_csv(output_path, index=False)
+
+
+if __name__ == "__main__":
+    one_hot_encode_data()
