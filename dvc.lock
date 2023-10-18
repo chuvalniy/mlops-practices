@@ -1,70 +1,5 @@
 schema: '2.0'
 stages:
-  convert_json_to_txt:
-    cmd: python src/data/convert_json_to_txt.py data/raw/all_scripts_raw.json data/interim/all_scripts_raw.txt
-    deps:
-    - path: data/raw/all_scripts_raw.json
-      hash: md5
-      md5: 4ec3df89b0d2e827f22f37072dd32982
-      size: 23067507
-    - path: src/data/convert_json_to_txt.py
-      hash: md5
-      md5: 69018a2d54caf98607a2026326dcab63
-      size: 780
-    outs:
-    - path: data/interim/all_scripts_raw.txt
-      hash: md5
-      md5: 1916f5f51c313c5cf9ed3c7b0299aa83
-      size: 22979546
-  tokenize_data:
-    cmd: python src/data/tokenize_data.py data/interim/all_scripts_raw.txt data/processed/all_data_tokenized.txt
-    deps:
-    - path: data/interim/all_scripts_raw.txt
-      hash: md5
-      md5: 1916f5f51c313c5cf9ed3c7b0299aa83
-      size: 22979546
-    - path: src/data/tokenize_data.py
-      hash: md5
-      md5: 94851345cf26da9dcb6874f001aa943b
-      size: 813
-    outs:
-    - path: data/processed/all_data_tokenized.txt
-      hash: md5
-      md5: edf9db3050a063830899c4393437afb7
-      size: 28895690
-  create_config:
-    cmd: python src/utils/create_config.py 16 0.1 0.1 8 4 4 0.1 4 model_config.json
-    deps:
-    - path: src/utils/create_config.py
-      hash: md5
-      md5: 66cff4412cc02167d432369cd6697750
-      size: 1954
-    outs:
-    - path: model_config.json
-      hash: md5
-      md5: ba8997fcce36803ab4590a148a4e15c9
-      size: 145
-  train_model:
-    cmd: python src/models/train_model.py data/processed/all_data_tokenized.txt model_config.json
-      models/weights.pt 101 100 0.1
-    deps:
-    - path: data/processed/all_data_tokenized.txt
-      hash: md5
-      md5: edf9db3050a063830899c4393437afb7
-      size: 28895690
-    - path: model_config.json
-      hash: md5
-      md5: ba8997fcce36803ab4590a148a4e15c9
-      size: 145
-    - path: src/models/train_model.py
-      hash: md5
-      md5: 562eabae7821e2f8a0e94811d2e69ad1
-      size: 12936
-    outs:
-    - path: models/weights.pt
-      hash: md5
-      md5: b36ccb9073b907862622e00f59d0ff05
-      size: 7031245
   clean_data:
     cmd: python src/data/clean_data.py data/raw/smoking_driking_dataset_Ver01.csv
       data/interim/cleaned_data.csv
@@ -83,29 +18,29 @@ stages:
       md5: 08e265a99c3e4c4fd2f847bf00d2952b
       size: 139502223
   one_hot_encode_data:
-    cmd: python src/data/one_hot_encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
+    cmd: python src/data/encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
     deps:
     - path: data/interim/cleaned_data.csv
       hash: md5
       md5: 08e265a99c3e4c4fd2f847bf00d2952b
       size: 139502223
-    - path: src/data/one_hot_encode_data.py
+    - path: src/data/encode_data.py
       hash: md5
-      md5: 7b2fe07f8c7a524b78fa3ccdf367cab0
-      size: 645
+      md5: fe9e6cdce97cbae6fe6d1e60356fec0b
+      size: 1145
     outs:
     - path: data/processed/processed_data.csv
       hash: md5
-      md5: 85b5acb7d8f38267741ff7ba246b834c
-      size: 150268501
+      md5: 21f9311b7e6ad03a03d7f4afe004b604
+      size: 141346346
   prepare_datasets:
     cmd: python src/models/prepare_datasets.py data/processed/processed_data.csv data/processed/train.csv
       data/processed/val.csv
     deps:
     - path: data/processed/processed_data.csv
       hash: md5
-      md5: 85b5acb7d8f38267741ff7ba246b834c
-      size: 150268501
+      md5: 21f9311b7e6ad03a03d7f4afe004b604
+      size: 141346346
     - path: src/models/prepare_datasets.py
       hash: md5
       md5: f35ce787c87de2a7512f6ae49909cf19
@@ -113,9 +48,34 @@ stages:
     outs:
     - path: data/processed/train.csv
       hash: md5
-      md5: abf0cb3e1e290d3fab19ff538a22b59e
-      size: 105187598
+      md5: 7a9b2d0dd53df9b1ef3f275e4b0eb6d3
+      size: 98942079
     - path: data/processed/val.csv
       hash: md5
-      md5: fead3f0dfbd019148f75ebc3eb7c5040
-      size: 45081293
+      md5: 1232743cceca92a94c7cb8df4be322c5
+      size: 42404616
+  train_model:
+    cmd: python src/models/train_model.py data/processed/train.csv data/processed/val.csv
+      reports/metrics.json models/model.clf
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 7a9b2d0dd53df9b1ef3f275e4b0eb6d3
+      size: 98942079
+    - path: data/processed/val.csv
+      hash: md5
+      md5: 1232743cceca92a94c7cb8df4be322c5
+      size: 42404616
+    - path: src/models/train_model.py
+      hash: md5
+      md5: 7a3d79d59b5f09d08bd56f7b7caf5fed
+      size: 2967
+    outs:
+    - path: models/model.clf
+      hash: md5
+      md5: 190844586e567e022872590f4fbd63e2
+      size: 41785
+    - path: reports/metrics.json
+      hash: md5
+      md5: c915a17964a61d1951e92d1567797dd9
+      size: 77
