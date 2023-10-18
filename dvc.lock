@@ -83,18 +83,18 @@ stages:
       md5: 08e265a99c3e4c4fd2f847bf00d2952b
       size: 139502223
   one_hot_encode_data:
-    cmd: python src/data/one_hot_encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
+    cmd: python src/data/encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
     deps:
     - path: data/interim/cleaned_data.csv
       hash: md5
       md5: 08e265a99c3e4c4fd2f847bf00d2952b
       size: 139502223
-    - path: src/data/one_hot_encode_data.py
+    - path: src/data/encode_data.py
       hash: md5
-      md5: 7b2fe07f8c7a524b78fa3ccdf367cab0
-      size: 645
+      md5: fe9e6cdce97cbae6fe6d1e60356fec0b
+      size: 1145
     outs:
     - path: data/processed/processed_data.csv
       hash: md5
-      md5: 85b5acb7d8f38267741ff7ba246b834c
-      size: 150268501
+      md5: 21f9311b7e6ad03a03d7f4afe004b604
+      size: 141346346

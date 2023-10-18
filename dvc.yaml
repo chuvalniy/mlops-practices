@@ -7,9 +7,9 @@ stages:
     outs:
       - data/interim/cleaned_data.csv
   one_hot_encode_data:
-    cmd: python src/data/one_hot_encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
+    cmd: python src/data/encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
     deps:
       - data/interim/cleaned_data.csv
-      - src/data/one_hot_encode_data.py
+      - src/data/encode_data.py
     outs:
       - data/processed/processed_data.csv
