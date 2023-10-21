@@ -1,16 +1,16 @@
 stages:
-  clean_data:
-    cmd: python src/data/clean_data.py data/raw/smoking_driking_dataset_Ver01.csv data/interim/cleaned_data.csv
+  format_data:
+    cmd: python src/data/format_data.py data/raw/smoking_driking_dataset_Ver01.csv data/interim/format_data.csv
     deps:
       - data/raw/smoking_driking_dataset_Ver01.csv
-      - src/data/clean_data.py
+      - src/data/format_data.py
     outs:
-      - data/interim/cleaned_data.csv
+      - data/interim/format_data.csv
 
   remove_duplicates:
-    cmd: python src/data/clean_data.py data/interim/cleaned_data.csv data/interim/remove_duplicates.csv
+    cmd: python src/data/remove_duplicates.py data/interim/format_data.csv data/interim/remove_duplicates.csv
     deps:
-      - data/interim/cleaned_data.csv
+      - data/interim/format_data.csv
       - src/data/remove_duplicates.py
     outs:
       - data/interim/remove_duplicates.csv

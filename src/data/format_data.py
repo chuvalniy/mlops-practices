@@ -5,7 +5,7 @@ import pandas as pd
 @click.command()
 @click.argument("input_path", type=click.Path(exists=True))
 @click.argument("output_path", type=click.Path())
-def clean_data(input_path: str, output_path: str) -> None:
+def format_data(input_path: str, output_path: str) -> None:
     """
     Renames some of the dataframe features and their values for future clarity and converts them to the proper type.
     :param input_path: Path to read .csv file.
@@ -33,4 +33,4 @@ def clean_data(input_path: str, output_path: str) -> None:
 
 
 if __name__ == "__main__":
-    clean_data()
+    format_data()
