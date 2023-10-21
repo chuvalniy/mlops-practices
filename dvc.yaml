@@ -7,10 +7,18 @@ stages:
     outs:
       - data/interim/cleaned_data.csv
 
-  one_hot_encode_data:
-    cmd: python src/data/encode_data.py data/interim/cleaned_data.csv data/processed/processed_data.csv
+  remove_outliers:
+    cmd: python src/data/remove_outliers.py data/interim/cleaned_data.csv data/interim/cleaned_data_iqr.csv
     deps:
       - data/interim/cleaned_data.csv
+      - src/data/remove_outliers.py
+    outs:
+      - data/interim/cleaned_data_iqr.csv
+
+  one_hot_encode_data:
+    cmd: python src/data/encode_data.py data/interim/cleaned_data_iqr.csv data/processed/processed_data.csv
+    deps:
+      - data/interim/cleaned_data_iqr.csv
       - src/data/encode_data.py
     outs:
       - data/processed/processed_data.csv
