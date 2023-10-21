@@ -7,10 +7,18 @@ stages:
     outs:
       - data/interim/cleaned_data.csv
 
-  remove_outliers:
-    cmd: python src/data/remove_outliers.py data/interim/cleaned_data.csv data/interim/cleaned_data_iqr.csv
+  remove_duplicates:
+    cmd: python src/data/clean_data.py data/interim/cleaned_data.csv data/interim/remove_duplicates.csv
     deps:
       - data/interim/cleaned_data.csv
+      - src/data/remove_duplicates.py
+    outs:
+      - data/interim/remove_duplicates.csv
+
+  remove_outliers:
+    cmd: python src/data/remove_outliers.py data/interim/remove_duplicates.csv data/interim/cleaned_data_iqr.csv
+    deps:
+      - data/interim/remove_duplicates.csv
       - src/data/remove_outliers.py
     outs:
       - data/interim/cleaned_data_iqr.csv

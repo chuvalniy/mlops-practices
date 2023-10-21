@@ -80,9 +80,9 @@ stages:
       md5: c915a17964a61d1951e92d1567797dd9
       size: 77
   remove_outliers:
-    cmd: python src/data/remove_outliers.py data/interim/cleaned_data.csv data/interim/cleaned_data_iqr.csv
+    cmd: python src/data/remove_outliers.py data/interim/remove_duplicates.csv data/interim/cleaned_data_iqr.csv
     deps:
-    - path: data/interim/cleaned_data.csv
+    - path: data/interim/remove_duplicates.csv
       hash: md5
       md5: 08e265a99c3e4c4fd2f847bf00d2952b
       size: 139502223
@@ -95,3 +95,19 @@ stages:
       hash: md5
       md5: e71c2b4e1e9587a4ade1f9adb444a56e
       size: 139609743
+  remove_duplicates:
+    cmd: python src/data/clean_data.py data/interim/cleaned_data.csv data/interim/remove_duplicates.csv
+    deps:
+    - path: data/interim/cleaned_data.csv
+      hash: md5
+      md5: 08e265a99c3e4c4fd2f847bf00d2952b
+      size: 139502223
+    - path: src/data/remove_duplicates.py
+      hash: md5
+      md5: 35f84f4e968e5b752586e881f7d4990b
+      size: 600
+    outs:
+    - path: data/interim/remove_duplicates.csv
+      hash: md5
+      md5: 08e265a99c3e4c4fd2f847bf00d2952b
+      size: 139502223
