@@ -2,7 +2,6 @@ dvc[s3]==3.23.0
 click~=8.1.7
 tiktoken~=0.5.1
 pytest~=7.4.2
-torch~=2.0.1
 mlflow~=2.7.1
 python-dotenv~=1.0.0
 pandas~=2.1.1
