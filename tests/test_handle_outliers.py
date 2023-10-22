@@ -6,7 +6,7 @@ import pytest
 from click.testing import CliRunner
 from numpy.random import RandomState
 
-from src.data.remove_outliers import remove_outliers
+from src.data.handle_outliers import handle_outliers
 
 random_state = RandomState(42)  # For test & expected array initial reproducibility.
 
@@ -34,7 +34,7 @@ def mock_csv_file(tmp_path: pathlib.Path):
     return str(test_csv_path)
 
 
-def test_remove_outliers(mock_csv_file, tmp_path: pathlib.Path):
+def test_handle_outliers(mock_csv_file, tmp_path: pathlib.Path):
     """
     Tests if array after outlier removal is close to initial mean value for every feature.
     :param mock_csv_file:
@@ -46,7 +46,7 @@ def test_remove_outliers(mock_csv_file, tmp_path: pathlib.Path):
 
     # remove_outliers() uses CLI, so define CliRunner as helper to run the function.
     runner = CliRunner()
-    result = runner.invoke(remove_outliers, [mock_csv_file, str(output_path)])
+    result = runner.invoke(handle_outliers, [mock_csv_file, str(output_path)])
 
     assert result.exit_code == 0
 

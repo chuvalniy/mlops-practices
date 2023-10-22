@@ -5,7 +5,7 @@ import pandas as pd
 @click.command()
 @click.argument("input_path", type=click.Path(exists=True))
 @click.argument("output_path", type=click.Path())
-def remove_outliers(input_path: str, output_path: str) -> None:
+def handle_outliers(input_path: str, output_path: str) -> None:
     """
     Replaces outliers with the closest values to feature boundary using interquartile range method.
     :param input_path: Path to read .csv file.
@@ -31,4 +31,4 @@ def remove_outliers(input_path: str, output_path: str) -> None:
 
 
 if __name__ == "__main__":
-    remove_outliers()
+    handle_outliers()

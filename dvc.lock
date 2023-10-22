@@ -18,9 +18,9 @@ stages:
       md5: 08e265a99c3e4c4fd2f847bf00d2952b
       size: 139502223
   one_hot_encode_data:
-    cmd: python src/data/encode_data.py data/interim/cleaned_data_iqr.csv data/processed/processed_data.csv
+    cmd: python src/data/encode_data.py data/interim/handle_outliers.csv data/processed/processed_data.csv
     deps:
-    - path: data/interim/cleaned_data_iqr.csv
+    - path: data/interim/handle_outliers.csv
       hash: md5
       md5: e664d3f89fd1208b427753a78b7e0c1c
       size: 139606060
@@ -111,3 +111,36 @@ stages:
       hash: md5
       md5: 313f52159881476b321d3cb43016acd3
       size: 139498541
+  format_data:
+    cmd: python src/data/format_data.py data/raw/smoking_driking_dataset_Ver01.csv
+      data/interim/format_data.csv
+    deps:
+    - path: data/raw/smoking_driking_dataset_Ver01.csv
+      hash: md5
+      md5: 1b1b7bb3e3f428c250798d7e53fc5ec4
+      size: 109561668
+    - path: src/data/format_data.py
+      hash: md5
+      md5: 0f4f1474dca7d8a38a4b431075e52dc6
+      size: 1419
+    outs:
+    - path: data/interim/format_data.csv
+      hash: md5
+      md5: 08e265a99c3e4c4fd2f847bf00d2952b
+      size: 139502223
+  handle_outliers:
+    cmd: python src/data/handle_outliers.py data/interim/remove_duplicates.csv data/interim/handle_outliers.csv
+    deps:
+    - path: data/interim/remove_duplicates.csv
+      hash: md5
+      md5: 313f52159881476b321d3cb43016acd3
+      size: 139498541
+    - path: src/data/handle_outliers.py
+      hash: md5
+      md5: c0a2873f33f08feb52a0e86c0f1b4bb7
+      size: 1115
+    outs:
+    - path: data/interim/handle_outliers.csv
+      hash: md5
+      md5: e664d3f89fd1208b427753a78b7e0c1c
+      size: 139606060
