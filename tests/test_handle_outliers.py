@@ -37,8 +37,8 @@ def mock_csv_file(tmp_path: pathlib.Path):
 def test_handle_outliers(mock_csv_file, tmp_path: pathlib.Path):
     """
     Tests if array after outlier removal is close to initial mean value for every feature.
-    :param mock_csv_file:
-    :param tmp_path:
+    :param mock_csv_file: File path created in mock_csv_file().
+    :param tmp_path: Temporary file path provided via pytest API.
     :return:
     """
 
