@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 from click.testing import CliRunner
 
-from src.data.clean_data import clean_data
+from src.data.format_data import format_data
 
 
 @pytest.fixture()
@@ -28,7 +28,7 @@ def mock_csv_file(tmp_path: pathlib.Path):
     return str(test_csv_path)
 
 
-def test_clean_data(mock_csv_file, tmp_path: pathlib.Path):
+def test_format_data(mock_csv_file, tmp_path: pathlib.Path):
     """
     Checks whether data in .csv file was cleaned properly.
     :param mock_csv_file: File path created in mock_csv_file().
@@ -39,7 +39,7 @@ def test_clean_data(mock_csv_file, tmp_path: pathlib.Path):
 
     # clean_data() uses CLI, so define CliRunner as helper to run the function.
     runner = CliRunner()
-    result = runner.invoke(clean_data, [mock_csv_file, str(output_path)])
+    result = runner.invoke(format_data, [mock_csv_file, str(output_path)])
 
     assert result.exit_code == 0
 
