@@ -18,10 +18,6 @@ RANDOM_STATE = 42
 mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI")
 mlflow.set_tracking_uri(mlflow_tracking_uri)
 
-# Update S3 endpoint URL with current IP address (default is localhost).
-# s3_server_port = os.getenv("MLFLOW_S3_ENDPOINT_PORT")
-# os.environ['MLFLOW_S3_ENDPOINT_URL'] = f"http://{remote_server_ip}:{s3_server_port}"
-
 
 @click.command()
 @click.argument('train_path', type=click.Path(exists=True))
