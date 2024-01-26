@@ -15,15 +15,8 @@ load_dotenv()
 RANDOM_STATE = 42
 
 # Get remote server credentials from .env and set tracking URI for mlflow.
-remote_server_ip = os.getenv("MLFLOW_TRACKING_IP")
-remote_server_port = os.getenv("MLFLOW_TRACKING_PORT")
-remote_server_uri = f"http://{remote_server_ip}:{remote_server_port}"
-
-mlflow.set_tracking_uri(remote_server_uri)
-
-# Update S3 endpoint URL with current IP address (default is localhost).
-s3_server_port = os.getenv("MLFLOW_S3_ENDPOINT_PORT")
-os.environ['MLFLOW_S3_ENDPOINT_URL'] = f"http://{remote_server_ip}:{s3_server_port}"
+mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI")
+mlflow.set_tracking_uri(mlflow_tracking_uri)
 
 
 @click.command()
@@ -41,6 +34,9 @@ def train_model(train_path: str, val_path: str, score_path: str, artifact_path: 
     :return:
     """
     with mlflow.start_run():
+        mlflow.get_artifact_uri()
+        print(mlflow.get_artifact_uri())
+
         # Load processed datasets.
         df_train = pd.read_csv(train_path)
         df_val = pd.read_csv(val_path)
@@ -52,7 +48,7 @@ def train_model(train_path: str, val_path: str, score_path: str, artifact_path: 
         # Define parameters and model.
         params = {
             "max_depth": 3,
-            "n_estimators": 25,
+            "n_estimators": 2,
             "random_state": RANDOM_STATE
         }
         model = RandomForestClassifier(**params)
@@ -61,7 +57,7 @@ def train_model(train_path: str, val_path: str, score_path: str, artifact_path: 
         model.fit(X_train, y_train)
         jb.dump(model, artifact_path)
 
-        # Predict on validation set and save scores into local machine.
+        # Predict on a validation set and save scores into local machine.
         y_pred = model.predict(X_val)
         scores = {
             'accuracy': accuracy_score(y_val, y_pred),
