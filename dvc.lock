@@ -68,16 +68,16 @@ stages:
       size: 42436593
     - path: src/models/train_model.py
       hash: md5
-      md5: 7a3d79d59b5f09d08bd56f7b7caf5fed
-      size: 2967
+      md5: a5a2983e7fa036c265aaf53d19167ba7
+      size: 2928
     outs:
     - path: models/model.clf
       hash: md5
-      md5: 571eebe566df271f9ddd274362d6399e
-      size: 41785
+      md5: 6418a8becbbacc79e64691a2ce3bc46a
+      size: 5353
     - path: reports/metrics.json
       hash: md5
-      md5: 977aedd8e0d00ba825329a3066129e33
+      md5: e50575c111745328239e9a2102aea696
       size: 77
   remove_outliers:
     cmd: python src/data/remove_outliers.py data/interim/remove_duplicates.csv data/interim/cleaned_data_iqr.csv
