@@ -35,7 +35,6 @@ def train_model(train_path: str, val_path: str, score_path: str, artifact_path: 
     """
     with mlflow.start_run():
         mlflow.get_artifact_uri()
-        print(mlflow.get_artifact_uri())
 
         # Load processed datasets.
         df_train = pd.read_csv(train_path)
