@@ -1,1 +1,3 @@
-all_scripts_raw.txt
+/remove_duplicates.csv
+/format_data.csv
+/handle_outliers.csv

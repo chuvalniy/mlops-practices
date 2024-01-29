@@ -1,0 +1,2 @@
+['remote "google_drive"']
+    gdrive_user_credentials_file = mlops_token.json

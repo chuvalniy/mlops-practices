@@ -2,3 +2,6 @@
 .idea/
 .git/
 venv
+src/models/model.py
+pgadmin
+Docker/minio
