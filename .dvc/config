@@ -1,9 +1,8 @@
 [core]
-    remote = remote
+    remote = google_drive
     autostage = false
-
-['remote "remote"']
-    url = s3://star-trek-generator-bucket
-    endpointurl = https://storage.yandexcloud.net
-    access_key_id = YCAJE8PjyyAmNz99eF0NqRpnj
-    secret_access_key = YCOvG3k3-IclZ26R76YgcpHU2tjLYJqZn0_cC1gy
+['remote "google_drive"']
+    url = gdrive://1Rzvkqt1KGWSs48ba1M9KobgLSChx23za
+    gdrive_user_credentials_file = my-project-412704-55a3130b1178.json
+    gdrive_service_account_user_email = mlops-169@my-project-412704.iam.gserviceaccount.com
+    gdrive_acknowledge_abuse = true
