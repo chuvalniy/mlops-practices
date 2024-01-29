@@ -53,7 +53,29 @@ mlflow models serve
 ```
 
 ## How to use
-// add
+If you installed everything correctly, then this step will be simple.
+
+### Execute pipeline
+Execute this in project's root directory.
+```sh
+dvc pull
+```
+
+Run machine learning training pipeline.
+```sh
+dvc repro
+```
+### [Optional] Change model & tune hypeparameters.
+You can choose your own hyperparameters or change the model (Random Forest by default) by modifying  **train.py** file. 
+```sh
+# Define parameters and model.
+params = {
+    "max_depth": 3,
+    "n_estimators": 100,
+    "random_state": RANDOM_STATE
+}
+model = RandomForestClassifier(**params)
+```
 
 ## Documentation
 // add (stack, project structure, jupyter-notebooks)
