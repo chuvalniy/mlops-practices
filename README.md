@@ -77,13 +77,20 @@ params = {
 model = RandomForestClassifier(**params)
 ```
 
-## Documentation
-// add (stack, project structure, jupyter-notebooks)
+## Documenation
+In general, all the code is covered with docstrings and comments about what each component does, but there are some points that cannot be particularly described. Below is a description of the architecture, tech stack used and the data source.
+### Architecture
+If you want to check app architecture I suggest you to visit [this](docs/architecture.png) link.
 
+### Stack
+A more detailed description of each library that was used to create this application can be found [here](docs/stack.md).
+
+### Data
+Training data can be found on [Kaggle](https://www.kaggle.com/datasets/sooyoungher/smoking-drinking-dataset). If you are interested in exploratory data analysis, you can find it at this [link](notebooks/) in two Jupyter Notebooks.
 ## Testing
 Almost every function is provided with unit test via [pytest](https://docs.pytest.org/en/stable/contents.html) and [Click](https://github.com/pallets/click) libraries.
 
-Execute the following command in your project directory to run the tests.
+Execute the following command in your project directory to run the tests. 
 
 ```python
 pytest -v
