@@ -5,3 +5,4 @@ venv
 src/models/model.py
 pgadmin
 Docker/minio
+__pycache__
